@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Welcome from './components/Welcome'
 import Dashboard from './components/dashboard/dashboard'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CreateWallet from './components/dashboard/dashboardoperations/CreateWallet';
 
 function App() {
 
@@ -13,7 +14,8 @@ function App() {
           <Nav />
           <Routes>
             <Route path='/' element={<Welcome/>} />
-            <Route path='/dashboard' element={<Dashboard/>} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/createwallet' element={<CreateWallet />} />
           </Routes>
     </Router>
     </>

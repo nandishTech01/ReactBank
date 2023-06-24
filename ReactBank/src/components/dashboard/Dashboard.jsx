@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import DashboardItem from './DashboardItem'
+import { Link } from 'react-router-dom';
+    
+
 
 export class Dashboard extends Component {
   render() {
@@ -15,7 +18,7 @@ export class Dashboard extends Component {
                             Create new
                 </button>
                         <div className="dropdown-menu">
-                            <a className="dropdown-item" to="/createwallet">Wallet</a>
+                            <Link className="dropdown-item" to="/createwallet">Wallet</Link>
                             <button disabled className="dropdown-item">Transaction</button>
                         </div>
                     </div>
