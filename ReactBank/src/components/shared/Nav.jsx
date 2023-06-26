@@ -24,13 +24,13 @@ export class Nav extends Component {
 
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <Link className="nav-link " href="register.html">
+                        <Link className="nav-link " to="register.html">
                             Sign Up
                 </Link>
                     </li>
                     <br/>
                     <li className="nav-item">
-                        <Link className="nav-link" href="login.html">
+                        <Link className="nav-link" to="login.html">
                             Login
                 </Link>
                     </li>
