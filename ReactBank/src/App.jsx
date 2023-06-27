@@ -6,11 +6,16 @@ import Dashboard from './components/dashboard/dashboard'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CreateWallet from './components/dashboard/dashboardoperations/CreateWallet';
 import NotFound from './components/shared/NotFound';
+import { Provider } from 'react-redux';
+import store from './store';
+
+
 
 function App() {
 
   return (
     <>
+    <Provider store={store}>
     <Router>
           <Nav />
           <Routes>
@@ -22,6 +27,7 @@ function App() {
 
           </Routes>
     </Router>
+    </Provider>
     </>
   )
 }
