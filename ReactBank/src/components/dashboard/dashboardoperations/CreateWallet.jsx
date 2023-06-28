@@ -1,96 +1,85 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import { createWallet } from '../../../actions/projectActions'
+import classnames from 'classnames'
 
-function CreateWallet() {
-  const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('');
+class CreateWallet extends Component {
+    constructor(props) {
+        super(props)
 
-  const changeHandler = (event, fieldName) => {
-    if (fieldName === 'name') {
-      setName(event.target.value);
-    } else if (fieldName === 'accountNumber') {
-      setAccountNumber(event.target.value);
-    } else if (fieldName === 'description') {
-      setDescription(event.target.value);
-    } else if (fieldName === 'priority') {
-      setPriority(event.target.value);
+        this.state = {
+            name: '',
+            accountNumber: '',
+            description: '',
+            priority: '',
+            errors:''
+        }
     }
-  };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
+    componentWillReceiveProps(nextProps){
+        if(nextProps.errors){
+            this.setState({errors:nextProps.errors})
+        }
+    }
 
-    const newWallet = {
-      name: name,
-      accountNumber: accountNumber,
-      description: description,
-      priority: priority
-    };
+    changeHandler = (event, fieldName) => {
+        this.setState({
+            [fieldName]: event.target.value
+        })
+    }
 
-    axios
-      .post('http://localhost:8081/wallet', newWallet)
-      .then((res) => {
-        navigate('/dashboard'); // Redirect to the dashboard after creating the wallet
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('Error');
-      });
-  };
+    submitHandler = (event) => {
+        const newWallet = {
+            name: this.state.name,
+            accountNumber: this.state.accountNumber,
+            description: this.state.description,
+            priority: this.state.priority
+        }
+        this.props.createWallet(newWallet,this.props.history)
+        event.preventDefault()
+    }
 
-  return (
-    <div className="project">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8 m-auto">
-            <h5 className="display-4 text-center">Create Wallet</h5>
-            <hr />
-            <form onSubmit={submitHandler}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  onChange={(event) => changeHandler(event, 'name')}
-                  className="form-control form-control-lg"
-                  placeholder="Account Name"
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  onChange={(event) => changeHandler(event, 'accountNumber')}
-                  className="form-control form-control-lg"
-                  placeholder="Account No"
-                />
-              </div>
-              <div className="form-group">
-                <textarea
-                  onChange={(event) => changeHandler(event, 'description')}
-                  className="form-control form-control-lg"
-                  placeholder="Description"
-                ></textarea>
-              </div>
-              <div className="form-group">
-                <select
-                  className="form-control form-control-lg"
-                  onChange={(event) => changeHandler(event, 'priority')}
-                >
-                  <option value={3}>Display Priority</option>
-                  <option value={1}>High</option>
-                  <option value={2}>Medium</option>
-                  <option value={3}>Low</option>
-                </select>
-              </div>
-              <input type="submit" className="btn btn-primary btn-block mt-4" value="Create/Update" />
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    render() {
+        return (
+            <div className="project">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-8 m-auto">
+                            <h5 className="display-4 text-center">Create Wallet</h5>
+                            <hr />
+                            <form onSubmit={(event)=>this.submitHandler(event)}>
+                                <div className="form-group">
+                                    <input type="text" onChange={(event) => this.changeHandler(event, "name")} className={classnames("form-control form-control-lg",{"is-invalid":this.state.errors.name})} placeholder="Account Name" />
+                                    <p className="text-danger">{this.state.errors.name}</p>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" onChange={(event) => this.changeHandler(event, "accountNumber")} className={classnames("form-control form-control-lg",{"is-invalid":this.state.errors.accountNumber})} placeholder="Account No" />
+                                    <p className="text-danger">{this.state.errors.accountNumber}</p>
+                                </div>
+                                <div className="form-group">
+                                    <textarea onChange={(event) => this.changeHandler(event, "description")} className={classnames("form-control form-control-lg",{"is-invalid":this.state.errors.description})} placeholder="Description"></textarea>
+                                    <p className="text-danger">{this.state.errors.description}</p>
+                                </div>
+                                <div className="form-group">
+                                    <select className="form-control form-control-lg" onChange={(event) => this.changeHandler(event, "priority")}>
+                                        <option value={3}>Display Priority</option>
+                                        <option value={1}>High</option>
+                                        <option value={2}>Medium</option>
+                                        <option value={3}>Low</option>
+                                    </select>
+                                </div>
+                                <input type="submit" className="btn btn-primary btn-block mt-4" value="Create/Update" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
-export default CreateWallet;
+const mapStateToProps = (state) =>({
+    errors:state.errors
+})
+
+export default connect(mapStateToProps,{createWallet})(CreateWallet)
