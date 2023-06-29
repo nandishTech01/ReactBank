@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createWallet } from '../../../actions/projectActions';
 import classnames from 'classnames';
 import { useNavigate } from 'react-router-dom';
+import { getWallet } from '../../../actions/projectActions';
 
-class CreateWallet extends React.Component {
+
+class UpdateWallet extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,9 +18,23 @@ class CreateWallet extends React.Component {
     };
   }
 
+  componentDidMount(){
+        this.props.getWallet(this.props.match.params.id);
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.errors !== this.props.errors) {
       this.setState({ errors: this.props.errors });
+    }
+    if(prevProps.wallet){
+        this.setState({
+            id:nextProps.wallet.id,
+            name: nextProps.wallet.name,
+            accountNumber: nextProps.wallet.accountNumber,
+            description: nextProps.wallet.description,
+            currentBalance:nextProps.wallet.currentBalance,
+            priority: nextProps.wallet.priority,
+        })
     }
   }
 
@@ -30,13 +45,13 @@ class CreateWallet extends React.Component {
   };
 
   submitHandler = (event) => {
-    const newWallet = {
+    const updateWallet = {
       name: this.state.name,
       accountNumber: this.state.accountNumber,
       description: this.state.description,
       priority: this.state.priority
     };
-    this.props.createWallet(newWallet, this.props.navigate);
+    this.props.updateWallet(updateWallet, this.props.navigate);
     event.preventDefault();
   };
 
@@ -46,7 +61,7 @@ class CreateWallet extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">Create Wallet</h5>
+              <h5 className="display-4 text-center">Update Wallet</h5>
               <hr />
               <form onSubmit={(event) => this.submitHandler(event)}>
                 <div className="form-group">
@@ -83,7 +98,7 @@ class CreateWallet extends React.Component {
                     <option value={3}>Low</option>
                   </select>
                 </div>
-                <input type="submit" className="btn btn-primary btn-block mt-4" value="Create" />
+                <input type="submit" className="btn btn-primary btn-block mt-4" value="Update" />
               </form>
             </div>
           </div>
@@ -94,14 +109,15 @@ class CreateWallet extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.errors
+  errors: state.errors,
+  wallet:state.wallet.wallet
 });
 
-const ConnectedCreateWallet = connect(mapStateToProps, { createWallet })(CreateWallet);
+const ConnectedUpdateWallet = connect(mapStateToProps, {getWallet})(UpdateWallet);
 
-const CreateWalletContainer = () => {
+const UpdateWalletContainer = () => {
   const navigate = useNavigate();
-  return <ConnectedCreateWallet navigate={navigate} />;
+  return <ConnectedUpdateWallet navigate={navigate} />;
 };
 
-export default CreateWalletContainer;
+export default UpdateWalletContainer;
