@@ -1,0 +1,15 @@
+npm install
+npm i react
+npm i redux
+npm i react-redux
+npm i @reduxjs/toolkit
+npm i redux-thunk
+npm i redux-persist
+npm i react-dom
+npm i react-hook-form
+npm i react-router-dom
+npm i react-icon
+npm i react-icons
+npm i axios
+npm i classnames
+
