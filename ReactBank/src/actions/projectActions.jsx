@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DELETE_WALLET, GET_ERRORS, GET_WALLETS } from './types';
+import { DELETE_WALLET, GET_ERRORS, GET_WALLETS ,GET_WALLET} from './types';
 
 
 export const createWallet = (newWallet, navigate) => async dispatch => {
@@ -18,6 +18,25 @@ export const createWallet = (newWallet, navigate) => async dispatch => {
   }
 };
 
+export const updateWallet = (id,updateWallet, navigate) => async dispatch => {
+  try {
+    const response = await axios.put(`http://localhost:8081/wallet/${id}`, updateWallet,{
+      headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:5174'
+      }
+      })
+    console.log('Response:', response); // Check the response
+    if (response) {
+      navigate('/dashboard'); // Navigate using the passed navigate function
+    } else {
+      console.log('Invalid response');
+    }
+  } catch (err) {
+    console.log('Error:', err); // Check the error
+    console.log('Error response:', err.response); // Check the error response
+    dispatch({ type: GET_ERRORS, payload: err.response ? err.response.data : 'Unknown error occurred' });
+  }
+};
 
 export const getWallets = () => async dispatch => {
       await axios.get('http://localhost:8081/wallet')
@@ -27,12 +46,12 @@ export const getWallets = () => async dispatch => {
 };
 
 
-export const getWallet = () => async dispatch => {
+export const getWallet = (id) => async dispath => {
   await axios.get(`http://localhost:8081/wallet/${id}`)
-  .then((res) => {
-      dispatch({type:GET_WALLETS,payload:res.data})
-  })
-};
+      .then((res) => {
+          dispath({type:GET_WALLET,payload:res.data})
+      })
+}
 
 
 export const deleteWallet = (id) => async dispatch => {

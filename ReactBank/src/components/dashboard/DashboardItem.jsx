@@ -3,17 +3,15 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteWallet } from "../../actions/projectActions";
 
-
 export class DashboardItem extends Component {
-
   deleteBtnClick = () => {
     if (window.confirm("Are you sure you want to delete this Wallet?")) {
       this.props.deleteWallet(this.props.wallet.id);
     }
   };
-  
+
   render() {
-    const wallet=  this.props.wallet
+    const wallet = this.props.wallet;
     return (
       <div className="container">
         <div className="card card-body bg-light mb-3">
@@ -42,7 +40,7 @@ export class DashboardItem extends Component {
                     <i className="fa fa-edit pr-1"> Update Account Info</i>
                   </li>
                 </Link>
-                <Link to="/dashboard" onClick={()=>this.deleteBtnClick()}>
+                <Link to="/dashboard" onClick={() => this.deleteBtnClick()}>
                   <li className="list-group-item delete text-danger">
                     <i className="fa fa-minus-circle pr-1"> Delete Account</i>
                   </li>
@@ -56,4 +54,4 @@ export class DashboardItem extends Component {
   }
 }
 
-export default connect(null,{deleteWallet})(DashboardItem)
+export default connect(null, { deleteWallet })(DashboardItem);
