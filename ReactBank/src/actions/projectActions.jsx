@@ -18,9 +18,9 @@ export const createWallet = (newWallet, navigate) => async dispatch => {
   }
 };
 
-export const updateWallet = (id,updateWallet, navigate) => async dispatch => {
+export const updateWallet = (id,updatedWallet, navigate) => async dispatch => {
   try {
-    const response = await axios.put(`http://localhost:8081/wallet/${id}`, updateWallet)
+    const response = await axios.put(`http://localhost:8081/wallet/${id}`, updatedWallet)
     console.log('Response:', response); // Check the response
     if (response) {
       navigate('/dashboard'); // Navigate using the passed navigate function

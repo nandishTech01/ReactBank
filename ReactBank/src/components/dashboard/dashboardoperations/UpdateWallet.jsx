@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getWallet, updateWallet } from '../../../actions/projectActions';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import { useNavigate, useParams } from "react-router-dom";
+import { getWallet, updateWallet } from "../../../actions/projectActions";
 
 function UpdateWallet(props) {
   const [state, setState] = useState({
@@ -13,12 +13,14 @@ function UpdateWallet(props) {
     priority: "",
     errors: "",
   });
+  
 
   const navigate = useNavigate();
-  const { id } = useParams(); // Access the 'id' parameter from the URL
+  const { id } = useParams(); // Access the 'id' parameter from the URL`
 
-  useEffect(() => {
+   useEffect(() => {
     props.getWallet(id);
+    
   }, [id]);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ function UpdateWallet(props) {
       setState({ ...state, errors: props.errors });
     }
     if (props.wallet) {
+     
       setState({
         ...state,
         id: props.wallet.id,
@@ -40,7 +43,7 @@ function UpdateWallet(props) {
   const changeHandler = (event, fieldName) => {
     setState({ ...state, [fieldName]: event.target.value });
   };
-
+ 
   const submitHandler = (event) => {
     const updateWalletData = {
       id: state.id,
@@ -49,7 +52,7 @@ function UpdateWallet(props) {
       description: state.description,
       priority: state.priority,
     };
-    props.updateWallet(state.id, updateWalletData, navigate);
+    props.updateWallet(id, updateWalletData, navigate);
     event.preventDefault();
   };
 
@@ -65,6 +68,7 @@ function UpdateWallet(props) {
                 <input
                   type="text"
                   onChange={(event) => changeHandler(event, "name")}
+                  defaultValue={props.wallet && props.wallet.name ? props.wallet.name : ''}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.name,
                   })}
@@ -75,23 +79,17 @@ function UpdateWallet(props) {
               <div className="form-group">
                 <input
                   type="text"
-                  onChange={(event) =>
-                    changeHandler(event, "accountNumber")
-                  }
+                  onChange={(event) => changeHandler(event, "accountNumber")}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.accountNumber,
                   })}
                   placeholder="Account No"
                 />
-                <p className="text-danger">
-                  {state.errors.accountNumber}
-                </p>
+                <p className="text-danger">{state.errors.accountNumber}</p>
               </div>
               <div className="form-group">
                 <textarea
-                  onChange={(event) =>
-                    changeHandler(event, "description")
-                  }
+                  onChange={(event) => changeHandler(event, "description")}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.description,
                   })}
@@ -128,12 +126,14 @@ const mapStateToProps = (state) => ({
   wallet: state.wallet.wallet,
 });
 
-const ConnectedUpdateWallet= connect(mapStateToProps, { getWallet, updateWallet })(UpdateWallet);
+const ConnectedUpdateWallet = connect(mapStateToProps, {
+  getWallet,
+  updateWallet,
+})(UpdateWallet);
 
-
-const CreateWalletContainer = () => {
+const UpdateWalletContainer = () => {
   const navigate = useNavigate();
   return <ConnectedUpdateWallet navigate={navigate} />;
 };
 
-export default CreateWalletContainer;
+export default UpdateWalletContainer;
