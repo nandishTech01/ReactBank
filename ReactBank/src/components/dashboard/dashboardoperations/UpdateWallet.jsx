@@ -4,23 +4,22 @@ import classnames from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import { getWallet, updateWallet } from "../../../actions/projectActions";
 
-function UpdateWallet(props) {
+const UpdateWallet = (props) => {
   const [state, setState] = useState({
     id: "",
     name: "",
     accountNumber: "",
     description: "",
     priority: "",
-    errors: "",
+    errors: {},
   });
-  
 
   const navigate = useNavigate();
-  const { id } = useParams(); // Access the 'id' parameter from the URL`
+  const { id } = useParams();
 
-   useEffect(() => {
+  useEffect(() => {
     props.getWallet(id);
-    
+    console.log( props.getWallet(id));
   }, [id]);
 
   useEffect(() => {
@@ -28,32 +27,26 @@ function UpdateWallet(props) {
       setState({ ...state, errors: props.errors });
     }
     if (props.wallet) {
-     
-      setState({
-        ...state,
-        id: props.wallet.id,
-        name: props.wallet.name,
-        accountNumber: props.wallet.accountNumber,
-        description: props.wallet.description,
-        priority: props.wallet.priority,
-      });
+      const { id, name, accountNumber, description, priority } = props.wallet;
+      setState({ ...state, id, name, accountNumber, description, priority });
     }
   }, [props.errors, props.wallet]);
 
   const changeHandler = (event, fieldName) => {
     setState({ ...state, [fieldName]: event.target.value });
   };
- 
+
   const submitHandler = (event) => {
-    const updateWalletData = {
-      id: state.id,
-      name: state.name,
-      accountNumber: state.accountNumber,
-      description: state.description,
-      priority: state.priority,
-    };
-    props.updateWallet(id, updateWalletData, navigate);
     event.preventDefault();
+    const { id, name, accountNumber, description, priority } = state;
+    const updatedWallet = {
+      id,
+      name,
+      accountNumber,
+      description,
+      priority,
+    };
+    props.updateWallet(id, updatedWallet, navigate);
   };
 
   return (
@@ -61,46 +54,55 @@ function UpdateWallet(props) {
       <div className="container">
         <div className="row">
           <div className="col-md-8 m-auto">
-            <h5 className="display-4 text-center">update Wallet</h5>
+            <h5 className="display-4 text-center">Update Wallet</h5>
             <hr />
             <form onSubmit={submitHandler}>
               <div className="form-group">
                 <input
                   type="text"
                   onChange={(event) => changeHandler(event, "name")}
-                  defaultValue={props.wallet && props.wallet.name ? props.wallet.name : ''}
+                  value={state.name}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.name,
                   })}
                   placeholder="Account Name"
                 />
-                <p className="text-danger">{state.errors.name}</p>
+                {state.errors.name && (
+                  <p className="text-danger">{state.errors.name}</p>
+                )}
               </div>
               <div className="form-group">
                 <input
                   type="text"
                   onChange={(event) => changeHandler(event, "accountNumber")}
+                  value={state.accountNumber}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.accountNumber,
                   })}
                   placeholder="Account No"
                 />
-                <p className="text-danger">{state.errors.accountNumber}</p>
+                {state.errors.accountNumber && (
+                  <p className="text-danger">{state.errors.accountNumber}</p>
+                )}
               </div>
               <div className="form-group">
                 <textarea
                   onChange={(event) => changeHandler(event, "description")}
+                  value={state.description}
                   className={classnames("form-control form-control-lg", {
                     "is-invalid": state.errors.description,
                   })}
                   placeholder="Description"
                 ></textarea>
-                <p className="text-danger">{state.errors.description}</p>
+                {state.errors.description && (
+                  <p className="text-danger">{state.errors.description}</p>
+                )}
               </div>
               <div className="form-group">
                 <select
                   className="form-control form-control-lg"
                   onChange={(event) => changeHandler(event, "priority")}
+                  value={state.priority}
                 >
                   <option value={3}>Display Priority</option>
                   <option value={1}>High</option>
@@ -119,7 +121,7 @@ function UpdateWallet(props) {
       </div>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   errors: state.errors,
@@ -130,6 +132,7 @@ const ConnectedUpdateWallet = connect(mapStateToProps, {
   getWallet,
   updateWallet,
 })(UpdateWallet);
+
 
 const UpdateWalletContainer = () => {
   const navigate = useNavigate();

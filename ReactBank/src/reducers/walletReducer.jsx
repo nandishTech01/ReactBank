@@ -11,7 +11,7 @@ export default function(state=initialState,action){
         case GET_WALLETS:
             return {...state,wallets:action.payload};
         case GET_WALLET:
-            return {...state,wallets:action.payload};
+            return {...state,wallet:action.payload};
         case DELETE_WALLET:
             return {...state,wallets:state.wallets.filter(x=>x.id!==action.payload) };
             //ahi id lay delete kari dese ahi payload ma id aave che projectactions mathi.
