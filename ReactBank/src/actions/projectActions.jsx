@@ -56,3 +56,16 @@ export const deleteWallet = (id) => async dispatch => {
       dispatch({type:DELETE_WALLET,payload:id})
   })
 };   //ahi thi pachi reducer ma jase and pachi badhu run thase.
+
+
+//Transactions
+
+export const createTransaction = (newTransaction, navigate,walletid) => async dispath => {
+  await axios.post(`http://localhost:8081/transaction/${walletid}`, newTransaction)
+      .then((res) => {
+        navigate(`/transactions/${walletid}`)
+      }).catch((err) => {
+          console.log(err);
+          dispath({type:GET_ERRORS,payload:err.response.data})
+      })
+}
