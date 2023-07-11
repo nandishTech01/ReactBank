@@ -11,7 +11,10 @@ import Dashboard from './components/dashboard/Dashboard';
 import UpdateWallet from './components/dashboard/dashboardoperations/UpdateWallet';
 import Transaction from './components/transactions/transaction';
 import AddTransaction from './components/transactions/transactionoperations/AddTransaction';
-
+import Login from './components/Login';
+import Signup from './components/Signup';
+import ForgotPassword from './components/ForgotPassword';
+import UpdateTransaction  from './components/transactions/transactionoperations/UpdateTransaction';
 
 
 
@@ -29,6 +32,16 @@ function App() {
             <Route path='/updatewallet/:id' element={<UpdateWallet />} />
             <Route path='/transactions/:id' element={<Transaction />} />
             <Route path='/trns/add/:id' element={<AddTransaction />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/forgot' element={<ForgotPassword />} />
+            <Route path='/updateTransaction/:walletid/:id' element={<UpdateTransaction />} />
+            
+
+
+
+
+
 
             <Route path='*' element={<NotFound />} />
 

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+
 
 export class Welcome extends Component {
   render() {
@@ -13,12 +15,12 @@ export class Welcome extends Component {
                             Create your account to manage your daily expense and hisab kitab
                 </p>
                         <hr />
-                        <a href="register.html" className="btn btn-lg btn-primary mr-2">
+                        <Link to="/signup" className="btn btn-lg btn-primary mr-2">
                             Sign Up
-                </a>
-                        <a href="login.html" className="btn btn-lg btn-secondary mr-2">
+                </Link>
+                        <Link to="/login" className="btn btn-lg btn-secondary mr-2">
                             Login
-                </a>
+                </Link>
                     </div>
                 </div>
             </div>

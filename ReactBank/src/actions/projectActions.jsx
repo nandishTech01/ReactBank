@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DELETE_WALLET, GET_ERRORS, GET_WALLETS ,GET_WALLET} from './types';
+import { DELETE_WALLET, GET_ERRORS, GET_WALLETS ,GET_WALLET, GET_TRANSACTIONS, GET_TRANSACTION, DELETE_TRANSACTION} from './types';
 
 
 export const createWallet = (newWallet, navigate) => async dispatch => {
@@ -69,3 +69,35 @@ export const createTransaction = (newTransaction, navigate,walletid) => async di
           dispath({type:GET_ERRORS,payload:err.response.data})
       })
 }
+
+export const updateTransaction = (oldTransaction, navigate,walletid,id) => async dispath => {
+  await axios.put(`http://localhost:8081/transaction/${walletid}/${id}`, oldTransaction)
+      .then((res) => {
+        navigate(`/transactions/${walletid}`)
+      }).catch((err) => {
+          console.log(err);
+          dispath({type:GET_ERRORS,payload:err.response.data})
+      })
+}
+
+export const getTransactions = (walletid) => async dispatch => {
+  await axios.get(`http://localhost:8081/transaction/${walletid}`)
+  .then((res) => {
+      dispatch({type:GET_TRANSACTIONS,payload:res.data})
+  })
+};
+
+
+export const getTransaction = (walletid,id) => async dispath => {
+await axios.get(`http://localhost:8081/transaction/${walletid}/${id}`)
+  .then((res) => {
+      dispath({type:GET_TRANSACTION,payload:res.data})
+  })
+}
+
+export const deleteTransaction = (id) => async dispatch => {
+  await axios.delete(`http://localhost:8081/transaction/${id}`)
+  .then((res) => {
+      dispatch({type:DELETE_TRANSACTION,payload:id})
+  })
+};
